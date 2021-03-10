@@ -1,0 +1,17 @@
+{
+  "name": "elektra-serverless-destinationdetails",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tedious": "^2.6.4"
+  },
+  "devDependencies": {
+    "serverless-secrets-plugin": "^0.1.0"
+  }
+}

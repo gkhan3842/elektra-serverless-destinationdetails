@@ -1,0 +1,42 @@
+
+service: elektra-serverless-destinationdetails
+plugins:
+  - serverless-secrets-plugin
+custom:
+  secrets: ${file(secrets.${opt:stage, self:provider.stage}.yml)}
+provider:
+  name: aws
+  runtime: nodejs8.10
+  vpc: 
+    securityGroupIds:
+      - ${self:custom.secrets.securityGroupIds}
+    subnetIds:
+      - ${self:custom.secrets.subnetIds1}
+      - ${self:custom.secrets.subnetIds2}
+
+  stage: dev
+  region: eu-west-1
+  apiName: getDestinationDetails
+  profile: ${self:custom.secrets.profile}
+  timeout: 300
+  memorySize: 512
+
+functions:
+  getDestinationDetails:
+    handler: handler.getDestinationDetails
+    name: getDestinationDetails
+    description:  API to get destination code for school type(LS/LT/Both)
+    environment: # Function level environment variables
+      dbLSName: ${self:custom.secrets.dbLSName}
+      dbLTName: ${self:custom.secrets.dbLTName}
+      dbServer: ${self:custom.secrets.dbServer}
+      dbUsername: ${self:custom.secrets.dbUsername}
+      dbPassword: ${self:custom.secrets.dbPassword}
+      spGetDestinationCodeLS: ${self:custom.secrets.spGetDestinationCodeLS}
+      spGetDestinationCodeLT: ${self:custom.secrets.spGetDestinationCodeLT}
+  
+    events:
+     - http:  
+         path: getDestinationDetails
+         method: post
+         cors: true
